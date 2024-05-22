@@ -11,10 +11,10 @@ int main(void)
 void print_file_histogram(const char *filepath)
 {
 	/* Create a table of the printable ASCII characters 
-	* Count the occurrences of each character, then output the result in this format
-	* c: n
-	*	where: c = character, n = count
-	*/
+	 * Count the occurrences of each character, then output the result in this format
+	 * c: n
+	 * where: c = character, n = count
+	 */
 }
 
 void print_file_contents(const char *filepath)
