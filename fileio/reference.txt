@@ -1,0 +1,14 @@
+// File readers:
+
+int getc(FILE *stream)
+/* given a working FILE *stream, reads and returns a character, or EOF (-1)
+progresses the counter for which character is read, meaning subsequent calls 
+*/ read new characters as long as they remain to be read
+
+size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
+/* 
+ptr: buffer for file contents
+size: size of a member (sizeof(char) as an example)
+nmemb: number of members
+stream: file pointer
+*/
