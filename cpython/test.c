@@ -8,7 +8,9 @@ int test1()
 	char *array = "Hello!";
 	char *separator = ", ";
 	char *joined = join(array, separator);
-	return !strcmp(joined, "H, e, l, l, o, !");
+	int passed = !strcmp(joined, "H, e, l, l, o, !");
+	free(joined);
+	return passed;
 }
 
 int test2()
@@ -26,9 +28,10 @@ int test2()
 	if (!arr) return 0;
 	for (int i = 0; i < result_size; i++)
 	{
-		// printf("[DEBUG] result: \"%s\", correct: \"%s\"\n", arr[i], correct[i]);
 		sum += strcmp(arr[i], correct[i]);
+		free(arr[i]);
 	}
+	free(arr);
 	return !sum;
 }
 
@@ -39,8 +42,9 @@ int test3()
 	people[1] = person_new("Owen", 20);
 	people[2] = person_new("Nina", 40);
 	struct Person *sorted_people = sorted(people, sizeof(struct Person), 3, &person_cmp);
+	int passed = !(strcmp(sorted_people[0].name, "Owen") + strcmp(sorted_people[1].name, "Nina") + strcmp(sorted_people[2].name, "Steve"));
 	free(sorted_people);
-	return !(strcmp(people[0].name, "Owen") + strcmp(people[1].name, "Nina") + strcmp(people[2].name, "Steve"));
+	return passed;
 }
 
 int main(void)
