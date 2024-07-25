@@ -28,3 +28,4 @@ struct Person
 
 struct Person person_new(char *name, int age);
 int person_cmp(const void *a, const void *b);
+int int_cmp(const void *a, const void *b);

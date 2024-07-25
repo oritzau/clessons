@@ -47,6 +47,20 @@ int test3()
 	return passed;
 }
 
+int test4()
+{
+	int nums[] = {-2, 1, 6, -17, 14};
+	int correct[] = {-17, -2, 1, 6, 14};
+	int *sorted_nums = sorted(nums, sizeof(int), 5, int_cmp);
+	int sum = 0;
+	for (int i = 0; i < 5; i++)
+	{
+		printf("sorted_nums[i]: %d, correct[i]: %d\n", sorted_nums[i], correct[i]);
+		sum += sorted_nums[i] == correct[i];
+	}
+	return sum == 5;
+}
+
 int main(void)
 {
 	if (!test1())
@@ -60,6 +74,11 @@ int main(void)
 		exit(1);
 	}
 	if (!test3())
+	{
+		puts("ERROR: sorted not correctly implemented!");
+		exit(1);
+	}
+	if (!test4())
 	{
 		puts("ERROR: sorted not correctly implemented!");
 		exit(1);
