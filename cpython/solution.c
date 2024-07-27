@@ -1,6 +1,7 @@
 #include "cpython.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 struct Person person_new(char *name, int age)
 {
@@ -16,14 +17,6 @@ int person_cmp(const void *a, const void *b)
 	p1 = (struct Person *)a;
 	p2 = (struct Person *)b;
 	return p1->age - p2->age;
-}
-
-int int_cmp(const void *a, const void *b)
-{
-	int *x1, *x2;
-	x1 = (int *)a;
-	x2 = (int*)b;
-	return (*x1) - (*x2);
 }
 
 char *join(char *array, char *separator)
@@ -103,11 +96,11 @@ void *sorted(void *items, int item_size, int num_items, int (*cmp_func)(const vo
 	memcpy(items_copy, items, item_size * num_items);
 	void *tmp = malloc(item_size);
 	// qsort(items, num_items, item_size, cmp_func);
-	for (int i = item_size; i < item_size * num_items ; i += item_size)
+	for (int i = item_size; i < item_size * num_items; i += item_size)
 	{
-		void *curr = items_copy + i;
 		for (int j = i - item_size; j >= 0; j -= item_size)
 		{
+			void *curr = items_copy + i;
 			void *compare = items_copy + j;
 			if (cmp_func(curr, compare) < 0)
 			// curr < compare
@@ -115,6 +108,7 @@ void *sorted(void *items, int item_size, int num_items, int (*cmp_func)(const vo
 				memcpy(tmp, curr, item_size);
 				memcpy(curr, compare, item_size);
 				memcpy(compare, tmp , item_size);
+				i -= item_size;
 			}
 		}
 	}
