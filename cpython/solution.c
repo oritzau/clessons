@@ -19,15 +19,25 @@ int person_cmp(const void *a, const void *b)
 	return p1->age - p2->age;
 }
 
+void split_free(char **split, int splitsize)
+{
+	for (int i = 0; i < splitsize; i++)
+		free(split[i]);
+	free(split);
+}
+
 char *join(char *array, char *separator)
 {
-	int array_len = strlen(array);
-	int separator_len = strlen(separator);
-	int joined_len = array_len + separator_len * (array_len - 1);
-	char *joined = malloc(sizeof(char) * (joined_len + 1));
+	int array_len, separator_len, joined_len, i, index;
+	char *joined;
+
+	array_len = strlen(array);
+	separator_len = strlen(separator);
+	joined_len = array_len + separator_len * (array_len - 1);
+	joined = malloc(sizeof(char) * (joined_len + 1));
 	joined[joined_len] = '\0';
-	int i = 0;
-	int index = 0;
+	i = 0;
+	index = 0;
 	while (1)
 	{
 		joined[i] = array[index];
@@ -47,21 +57,19 @@ char **split(char *string, char *pattern, int *result_size)
 {
 
 	int string_len, pattern_len, i, pattern_index, counter;
-	char tmp, *string_cpy, **result;
+	char tmp, *string_cpy, *free_cpy, **result;
 
 	string_len = strlen(string);
 	pattern_len = strlen(pattern);
 	pattern_index = *result_size = i = counter = 0;
-
 	result = (char**)malloc((string_len + 2) * sizeof(char*));
 	string_cpy = calloc(string_len + 1, sizeof(char));
-	char *string_cpy_orig_location = string_cpy;
+	free_cpy = string_cpy;
 	strcpy(string_cpy, string);
 
 	for (i = 0; i < string_len + 2; i++)
 		result[i] = calloc(MAXSPLITSIZE, sizeof(char));
 	i = 0;
-
 	while (counter < string_len)
 	{
 		while (string_cpy[i] == pattern[pattern_index]) 
@@ -86,16 +94,17 @@ char **split(char *string, char *pattern, int *result_size)
 	}
 	strncpy(result[*result_size], string_cpy, MAXSPLITSIZE);
 	(*result_size)++;
-	free(string_cpy_orig_location);
+	string_cpy = free_cpy;
+	free(string_cpy);
 	return result;
 }
 
 void *sorted(void *items, int item_size, int num_items, int (*cmp_func)(const void *, const void *))
 {
-	void *items_copy = malloc(item_size * num_items);
+	void *items_copy, *tmp;
+	items_copy = malloc(item_size * num_items);
 	memcpy(items_copy, items, item_size * num_items);
-	void *tmp = malloc(item_size);
-	// qsort(items, num_items, item_size, cmp_func);
+	tmp = malloc(item_size);
 	for (int i = item_size; i < item_size * num_items; i += item_size)
 	{
 		for (int j = i - item_size; j >= 0; j -= item_size)
