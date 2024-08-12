@@ -1,7 +1,6 @@
 #include "cpython.h"
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 struct Person person_new(char *name, int age)
 {
@@ -63,7 +62,8 @@ char **split(char *string, char *pattern, int *result_size)
 	pattern_len = strlen(pattern);
 	pattern_index = *result_size = i = counter = 0;
 	result = (char**)malloc((string_len + 2) * sizeof(char*));
-	string_cpy = calloc(string_len + 1, sizeof(char));
+	string_cpy = malloc(sizeof(char) * string_len + 1);
+	string_cpy[string_len] = '\0';
 	free_cpy = string_cpy;
 	strcpy(string_cpy, string);
 
@@ -102,6 +102,8 @@ char **split(char *string, char *pattern, int *result_size)
 void *sorted(void *items, int item_size, int num_items, int (*cmp_func)(const void *, const void *))
 {
 	void *items_copy, *tmp;
+	// Void Pointer Arithemtic Is Bad
+	char *vpaib;
 	items_copy = malloc(item_size * num_items);
 	memcpy(items_copy, items, item_size * num_items);
 	tmp = malloc(item_size);
@@ -109,8 +111,9 @@ void *sorted(void *items, int item_size, int num_items, int (*cmp_func)(const vo
 	{
 		for (int j = i - item_size; j >= 0; j -= item_size)
 		{
-			void *curr = items_copy + i;
-			void *compare = items_copy + j;
+			vpaib = (char *)items_copy;
+			void *curr = vpaib + i;
+			void *compare = vpaib + j;
 			if (cmp_func(curr, compare) < 0)
 			// curr < compare
 			{
