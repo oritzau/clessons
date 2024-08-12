@@ -11,9 +11,12 @@
 *		Returns an array of items sorted by comparitor function key
 */
 
+typedef int(*cmp_func)(const void *a, const void *b);
+
 char *join(char *array, char *separator);
 char **split(char *string, char *pattern, int *result_size);
-void *sorted(void *items, int item_size, int num_items, int (*cmp_func)(const void *, const void *));
+void *sorted(void *items, int item_size, int num_items, cmp_func cmp);
+void *insertion_sorted(void *items, int item_size, int num_items, cmp_func cmp);
 
 // The following is helper code for the tests that should pass when functions are implemented correctly
 struct Person
@@ -28,5 +31,7 @@ struct Person
 struct Person person_new(char *name, int age);
 int person_cmp(const void *a, const void *b);
 
+int int_cmp(const void *a, const void *b);
+
 // helper for freeing space allocated by split
-void split_free(char **split, int splitsize);
+void split_free(char **split, int split_len);

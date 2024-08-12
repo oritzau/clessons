@@ -37,19 +37,21 @@ int test2()
 
 int test3()
 {
-	struct Person people[5];
+	struct Person people[6];
 	people[0] = person_new("Steve", 57);
 	people[1] = person_new("Owen", 20);
 	people[2] = person_new("Chief Keef", 200);
-	people[3] = person_new("Sneed", -13);
-	people[4] = person_new("Nina", 40);
-	struct Person *sorted_people = sorted(people, sizeof(struct Person), 5, &person_cmp);
+	people[3] = person_new("Sneed", 13);
+	people[4] = person_new("Chuck", 79);
+	people[5] = person_new("Nina", 40);
+	struct Person *sorted_people = sorted(people, sizeof(struct Person), (sizeof people) / sizeof(struct Person), &person_cmp);
 	int passed = !(
 		strcmp(sorted_people[0].name, "Sneed") + 
 		strcmp(sorted_people[1].name, "Owen") + 
 		strcmp(sorted_people[2].name, "Nina") +
 		strcmp(sorted_people[3].name, "Steve") +
-		strcmp(sorted_people[4].name, "Chief Keef")
+		strcmp(sorted_people[4].name, "Chuck") +
+		strcmp(sorted_people[5].name, "Chief Keef")
 	);
 	free(sorted_people);
 	return passed;
