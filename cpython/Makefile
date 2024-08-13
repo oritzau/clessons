@@ -4,5 +4,8 @@ test: test.c solution.o
 solution: solution.c
 	cc -c solution.c
 
+timer: solution.c timer.c
+	cc solution.o timer.c -o timer
+
 clean:
 	rm -f a.out test *.o

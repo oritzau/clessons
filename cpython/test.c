@@ -44,7 +44,7 @@ int test3()
 	people[3] = person_new("Sneed", 13);
 	people[4] = person_new("Chuck", 79);
 	people[5] = person_new("Nina", 40);
-	struct Person *sorted_people = sorted(people, sizeof(struct Person), (sizeof people) / sizeof(struct Person), &person_cmp);
+	struct Person *sorted_people = sorted(people, (sizeof people) / sizeof(struct Person), sizeof(struct Person), &person_cmp);
 	int passed = !(
 		strcmp(sorted_people[0].name, "Sneed") + 
 		strcmp(sorted_people[1].name, "Owen") + 

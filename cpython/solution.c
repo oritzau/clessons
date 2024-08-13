@@ -172,14 +172,14 @@ void *mergesort(void *items, int item_size, int left, int right, cmp_func cmp)
 }
 
 // Return new copy of items, sorted by comparison cmp
-void *sorted(void *items, int item_size, int num_items, cmp_func cmp)
+void *sorted(void *items, int num_items, int item_size, cmp_func cmp)
 {
 	void *items_copy = malloc(sizeof item_size * num_items);
 	memcpy(items_copy, items, item_size * num_items);
 	return mergesort(items_copy, item_size, 0, num_items, cmp);
 }
 
-void *insertion_sorted(void *items, int item_size, int num_items, cmp_func cmp)
+void *insertion_sorted(void *items, int num_items, int item_size, cmp_func cmp)
 {
 	void *items_copy, *tmp;
 	// Void Pointer Arithmetic Is Bad

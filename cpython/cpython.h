@@ -11,12 +11,13 @@
 *		Returns an array of items sorted by comparitor function key
 */
 
+// Returns negative on a < b, 0 on a == b, positive on a > b
 typedef int(*cmp_func)(const void *a, const void *b);
 
 char *join(char *array, char *separator);
 char **split(char *string, char *pattern, int *result_size);
-void *sorted(void *items, int item_size, int num_items, cmp_func cmp);
-void *insertion_sorted(void *items, int item_size, int num_items, cmp_func cmp);
+void *sorted(void *items, int num_items, int item_size, cmp_func cmp);
+void *insertion_sorted(void *items, int num_items, int item_size, cmp_func cmp);
 
 // The following is helper code for the tests that should pass when functions are implemented correctly
 struct Person
