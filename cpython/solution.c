@@ -63,47 +63,45 @@ char *join(char *array, char *separator)
 char **split(char *string, char *pattern, int *result_size)
 {
 
-	int string_len, pattern_len, i, pattern_index, counter;
-	char tmp, *string_cpy, *free_cpy, **result;
+	int string_len, pattern_len;
+	int i, j, offset;
+	char **result;
 
 	string_len = strlen(string);
 	pattern_len = strlen(pattern);
-	pattern_index = *result_size = i = counter = 0;
-	result = (char**)malloc((string_len + 2) * sizeof(char*));
-	string_cpy = malloc(sizeof(char) * string_len + 1);
-	string_cpy[string_len] = '\0';
-	free_cpy = string_cpy;
-	strcpy(string_cpy, string);
+	*result_size = 0;
+	result = (char**)malloc(string_len * sizeof(char*));
 
-	for (i = 0; i < string_len + 2; i++)
+	for (i = 0; i < string_len; i++)
 		result[i] = calloc(MAXSPLITSIZE, sizeof(char));
-	i = 0;
-	while (counter < string_len)
+
+	i = j = offset = 0;
+	while (string[i])
 	{
-		while (string_cpy[i] == pattern[pattern_index]) 
+		while (string[i] == pattern[j])
 		{
-			if (pattern_index == pattern_len - 1)
+			if (j == pattern_len - 1)
 			{
-				// We've matched the pattern, ending at index i
-				string_cpy[i - (pattern_len - 1)] = '\0';
-				strncpy(result[*result_size], string_cpy, MAXSPLITSIZE);
-				string_cpy += i + 1;
-				(*result_size)++;
-				i = -1;
-				pattern_index = 0;
+				// We've reached the end of a pattern, copy from offset to current index, minus the pattern
+				memcpy(result[*result_size], string+ offset, i - offset - pattern_len + 1);
+				offset = i + 1;
+				*result_size += 1;
 				break;
 			}
+			j++;
 			i++;
-			pattern_index++;
 		}
-		pattern_index = 0;
+		j = 0;
 		i++;
-		counter++;
 	}
-	strncpy(result[*result_size], string_cpy, MAXSPLITSIZE);
-	(*result_size)++;
-	string_cpy = free_cpy;
-	free(string_cpy);
+	
+	// Copy in whatever is left of the string after last pattern, update size
+	memcpy(result[*result_size], string + offset, i - pattern_len);
+	*result_size += 1;
+	
+	// Free blocks we didn't use
+	for (i = *result_size; i < string_len; i++)
+		free(result[i]);
 	return result;
 }
 
@@ -153,6 +151,9 @@ void merge(void *items, int item_size, int left, int mid, int right, cmp_func cm
 		memcpy(vpaib + k, L + i, L_len - i);
 	if (j < R_len)
 		memcpy(vpaib + k, R + j, R_len - j);
+
+	free(L);
+	free(R);
 }
 
 void *mergesort(void *items, int item_size, int left, int right, cmp_func cmp)
@@ -174,7 +175,7 @@ void *mergesort(void *items, int item_size, int left, int right, cmp_func cmp)
 // Return new copy of items, sorted by comparison cmp
 void *sorted(void *items, int num_items, int item_size, cmp_func cmp)
 {
-	void *items_copy = malloc(sizeof item_size * num_items);
+	void *items_copy = malloc(item_size * num_items);
 	memcpy(items_copy, items, item_size * num_items);
 	return mergesort(items_copy, item_size, 0, num_items, cmp);
 }
@@ -195,7 +196,6 @@ void *insertion_sorted(void *items, int num_items, int item_size, cmp_func cmp)
 			void *curr = vpaib + i;
 			void *compare = vpaib + j;
 			if (cmp(curr, compare) < 0)
-			// curr < compare
 			{
 				memcpy(tmp, curr, item_size);
 				memcpy(curr, compare, item_size);
