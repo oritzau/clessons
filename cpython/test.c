@@ -29,9 +29,8 @@ int test2()
 	for (int i = 0; i < result_size; i++)
 	{
 		sum += strcmp(arr[i], correct[i]);
-		free(arr[i]);
 	}
-	free(arr);
+	split_free(arr, result_size);
 	return !sum;
 }
 
