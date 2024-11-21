@@ -1,29 +1,29 @@
 /*
-* Implement the following Python standard library functions in C, using the headings provided below
-*	str.join(array):
-*		Join the element of an iterable into a string
-*
-*	str.split(pattern):
-*		Split a string into an array of strings based on a pattern
-*
-* And for extra credit,
-*	sorted(array, key)
-*		Returns an array of items sorted by comparitor function key
-*/
+ * Implement the following Python standard library functions in C, using the
+ *headings provided below str.join(array): Join the element of an iterable into
+ *a string
+ *
+ *	str.split(pattern):
+ *		Split a string into an array of strings based on a pattern
+ *
+ * And for extra credit,
+ *	sorted(array, key)
+ *		Returns an array of items sorted by comparitor function key
+ */
 
 // Returns negative on a < b, 0 on a == b, positive on a > b
-typedef int(*cmp_func)(const void *a, const void *b);
+typedef int (*cmp_func)(const void *a, const void *b);
 
 char *join(char *array, char *separator);
 char **split(char *string, char *pattern, int *result_size);
 void *sorted(void *items, int num_items, int item_size, cmp_func cmp);
 void *insertion_sorted(void *items, int num_items, int item_size, cmp_func cmp);
 
-// The following is helper code for the tests that should pass when functions are implemented correctly
-struct Person
-{
-	char *name;
-	int age;
+// The following is helper code for the tests that should pass when functions
+// are implemented correctly
+struct Person {
+  char *name;
+  int age;
 };
 
 // Maximum length a char * in the split array can be
